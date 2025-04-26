@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)file:///C:/Users/sneha/Desktop/sky%20rider/GPA.HTML -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>Grade to GPA Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+    }
+
+    h2 {
+      color: #2c3e50;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input {
+      padding: 8px;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    button {
+      background-color: #0984e3;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0652dd;
+    }
+
+    .result {
+      margin-top: 20px;
+      background-color: #dfe6e9;
+      padding: 15px;
+      border-radius: 5px;
+    }
+
+    .fail {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>GPA Calculator for 9 Subjects</h2>
+
+  <form id="gpaForm">
+    <div id="subjects">
+      <!-- Generate 9 inputs -->
+      <script>
+        for (let i = 1; i <= 9; i++) {
+          document.write(`<label>Subject ${i} Grade:</label><input type="text" id="grade${i}" placeholder="Enter grade (O, A+, A, B+, B, C, U)" required><br>`);
+        }
+      </script>
+      <br>
+    </div>
+    <button type="button" onclick="calculateGPA()">Calculate GPA</button>
+  </form>
+
+  <div id="result" class="result">✅ Subject 1: Grade O - GPA: 10.0<br>✅ Subject 2: Grade A - GPA: 8.0<br>✅ Subject 3: Grade C - GPA: 5.0<br>✅ Subject 4: Grade B - GPA: 6.0<br>✅ Subject 5: Grade B+ - GPA: 7.0<br>✅ Subject 6: Grade A - GPA: 8.0<br>✅ Subject 7: Grade B+ - GPA: 7.0<br>✅ Subject 8: Grade A+ - GPA: 9.0<br>❌ Subject 9: Grade U (Fail) - GPA: 0.0<br><br><strong>📊 Overall GPA (excluding fails): 7.50</strong><br><span class="fail">❗ 1 subject(s) failed (U)</span></div>
+
+  <script>
+    function gradeToGPA(grade) {
+      switch (grade.toUpperCase()) {
+        case 'O': return 10.0;
+        case 'A+': return 9.0;
+        case 'A': return 8.0;
+        case 'B+': return 7.0;
+        case 'B': return 6.0;
+        case 'C': return 5.0;
+        case 'U': return 0.0;
+        default: return null;
+      }
+    }
+
+    function calculateGPA() {
+      let totalGPA = 0;
+      let failSubjects = 0;
+      let output = "";
+      let validSubjects = 0;
+
+      for (let i = 1; i <= 9; i++) {
+        const grade = document.getElementById(`grade${i}`).value.trim();
+        const gpa = gradeToGPA(grade);
+
+        if (gpa === null) {
+          output += `❌ Subject ${i}: Invalid grade entered ("${grade}")<br>`;
+          continue;
+        }
+
+        if (grade.toUpperCase() === 'U') {
+          failSubjects++;
+          output += `❌ Subject ${i}: Grade U (Fail) - GPA: 0.0<br>`;
+        } else {
+          totalGPA += gpa;
+          validSubjects++;
+          output += `✅ Subject ${i}: Grade ${grade.toUpperCase()} - GPA: ${gpa.toFixed(1)}<br>`;
+        }
+      }
+
+      if (validSubjects === 0) {
+        output += "<br>⚠️ No valid grades entered!";
+      } else {
+        const overallGPA = (totalGPA / validSubjects).toFixed(2);
+        output += `<br><strong>📊 Overall GPA (excluding fails): ${overallGPA}</strong>`;
+        if (failSubjects > 0) {
+          output += `<br><span class="fail">❗ ${failSubjects} subject(s) failed (U)</span>`;
+        }
+      }
+
+      document.getElementById("result").innerHTML = output;
+    }
+  </script>
+
+
+
+</body></html>
